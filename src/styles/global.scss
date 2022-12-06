@@ -1,0 +1,12 @@
+@import './theme/_theme.scss';
+@import './_layout.scss';
+
+body {
+  margin: 0;
+}
+
+.btn {
+  &-primary {
+    background-color: $primary;
+  }
+}

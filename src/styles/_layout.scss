@@ -1,0 +1,46 @@
+@import './theme/_theme.scss';
+
+.container {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  color: $blackspace;
+}
+
+.content {
+  display: flex;
+  flex: 1;
+}
+
+.pageContainer {
+  padding: 20px;
+  width: 80vw;
+}
+
+.headerContainer {
+  display: flex;
+  background: $blackspace10;
+  height: 50px;
+  align-items: center;
+  justify-content: center;
+  color: $primary;
+}
+
+.titleContainer {
+  margin: auto;
+}
+
+.footerContainer {
+  display: flex;
+  background: $blackspace10;
+  height: 50px;
+  align-items: center;
+  justify-content: center;
+  color: $primary;
+}
+
+.sidebarContainer {
+  background: $grey10;
+  width: 20vw;
+}
