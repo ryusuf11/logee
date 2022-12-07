@@ -1,86 +1,237 @@
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as y from 'yup';
-import type { SchemaOf } from 'yup';
-import { useForm, Controller } from 'react-hook-form';
-import InputField from '@/components/uikit/InputField';
-import { useLogin } from '@/modules/login/loginHook';
 import React, { ReactElement } from 'react';
 import Layout from '@/components/Layout';
+import { GetServerSideProps } from 'next';
+import { getReport } from '@/modules/dashboard/dashboardService';
+import { ReportData } from '@/modules/dashboard/dashboardEntity';
+import dayjs from 'dayjs';
 
-type FormData = {
-  email: string;
-  password: string;
+type DashboardProps = {
+  report: ReportData | null;
+  lastUpdate: string;
 };
-
-const validationSchema: SchemaOf<FormData> = y.object({
-  email: y.string().email().required(),
-  password: y.string().required(),
-});
-
-export default function Dashboard() {
-  const { trigger, handleSubmit, formState, reset, control, register } =
-    useForm<FormData>({
-      defaultValues: {
-        email: '',
-        password: '',
-      },
-      resolver: yupResolver(validationSchema),
-    });
-  const [errMessage, setErrMessage] = React.useState('');
-
-  const { mutate: loginUser } = useLogin({
-    onSuccess: () => {
-      setErrMessage('');
-    },
-    onError: (err) => {
-      setErrMessage(err.message || 'Terjadi kesalahan.');
-    },
-  });
-
-  const doLogin = (e: FormData) => {
-    loginUser(e);
-  };
-
+export default function Dashboard({ report, lastUpdate }: DashboardProps) {
   return (
-    <div>
-      <form
-        onSubmit={handleSubmit((e) => {
-          doLogin(e);
-        })}
-      >
-        <Controller
-          control={control}
-          defaultValue=""
-          name="email"
-          render={({ field: { onChange } }) => (
-            <InputField
-              type="email"
-              label="Email"
-              onChange={onChange}
-              errorMessage={formState.errors.email?.message}
-            />
-          )}
-        />
-        <Controller
-          control={control}
-          defaultValue=""
-          name="password"
-          render={({ field: { onChange } }) => (
-            <InputField
-              type="password"
-              label="Kata Sandi"
-              onChange={onChange}
-              errorMessage={formState.errors.password?.message}
-            />
-          )}
-        />
-        {errMessage && <div style={{ color: 'red' }}>{errMessage}</div>}
-        <button type="submit">Login</button>
-      </form>
+    <div className="dashboard">
+      <div className="dashboard__title">Laporan Performa Bisnis</div>
+      <div className="dashboard__period">
+        <div>Periode laporan : {new Date().getFullYear()}</div>
+        <div>
+          Pembaruan Terakhir : <span>{lastUpdate}</span>
+        </div>
+      </div>
+
+      {report && (
+        <div>
+          <div className="report">
+            <div className="report__title">GMV</div>
+            <div className="report__subtitle">
+              Akumulasi seluruh transaksi yang berhasil dilakukan dalam periode
+              waktu yang dipilih
+            </div>
+            <div className="report__item">
+              <span>Transaksi Kontainer</span>
+              <span>
+                {new Intl.NumberFormat('id-ID', {
+                  style: 'currency',
+                  currency: 'IDR',
+                }).format(report.gmv.container)}
+              </span>
+            </div>
+            <div className="report__item">
+              <span>Transaksi Pesanan Truk</span>
+              <span>
+                {new Intl.NumberFormat('id-ID', {
+                  style: 'currency',
+                  currency: 'IDR',
+                }).format(report.gmv.truckOrder)}
+              </span>
+            </div>
+            <div className="report__item report__item--total">
+              <span className="report__item--bold">Total</span>
+              <span>
+                {new Intl.NumberFormat('id-ID', {
+                  style: 'currency',
+                  currency: 'IDR',
+                }).format(report.gmv.total)}
+              </span>
+            </div>
+          </div>
+
+          <div className="report">
+            <div className="report__title">Transaksi</div>
+            <div className="report__subtitle">
+              Total transaksi dari semua metode pembayaran pada periode waktu
+              yang dipilih
+            </div>
+            <div className="report__item">
+              <span>Container Econ</span>
+              <span>
+                {new Intl.NumberFormat('id-ID', {
+                  style: 'currency',
+                  currency: 'IDR',
+                }).format(report.transaction.containerCountEcon)}
+              </span>
+            </div>
+            <div className="report__item">
+              <span>Container Paylater</span>
+              <span>
+                {new Intl.NumberFormat('id-ID', {
+                  style: 'currency',
+                  currency: 'IDR',
+                }).format(report.transaction.containerCountPayLater)}
+              </span>
+            </div>
+            <div className="report__item">
+              <span>Container VA</span>
+              <span>
+                {new Intl.NumberFormat('id-ID', {
+                  style: 'currency',
+                  currency: 'IDR',
+                }).format(report.transaction.containerCountVA)}
+              </span>
+            </div>
+            <div className="report__item">
+              <span>Truk CC</span>
+              <span>
+                {new Intl.NumberFormat('id-ID', {
+                  style: 'currency',
+                  currency: 'IDR',
+                }).format(report.transaction.orderTruckCountCC)}
+              </span>
+            </div>
+            <div className="report__item">
+              <span>Truk Internal B2B</span>
+              <span>
+                {new Intl.NumberFormat('id-ID', {
+                  style: 'currency',
+                  currency: 'IDR',
+                }).format(report.transaction.orderTruckCountInternalB2B)}
+              </span>
+            </div>
+            <div className="report__item">
+              <span>Truk Invoice Acceptance</span>
+              <span>
+                {new Intl.NumberFormat('id-ID', {
+                  style: 'currency',
+                  currency: 'IDR',
+                }).format(report.transaction.orderTruckCountInvoiceAcceptance)}
+              </span>
+            </div>
+            <div className="report__item">
+              <span>Truk Paylater</span>
+              <span>
+                {new Intl.NumberFormat('id-ID', {
+                  style: 'currency',
+                  currency: 'IDR',
+                }).format(report.transaction.orderTruckCountPayLater)}
+              </span>
+            </div>
+            <div className="report__item report__item--total">
+              <span className="report__item--bold">Total</span>
+              <span>
+                {new Intl.NumberFormat('id-ID', {
+                  style: 'currency',
+                  currency: 'IDR',
+                }).format(report.transaction.total)}
+              </span>
+            </div>
+          </div>
+
+          <div className="report">
+            <div className="report__title">Revenue</div>
+            <div className="report__subtitle">
+              Total pendapatan dari seluruh transaksi pada periode waktu yang
+              dipilih
+            </div>
+            <div className="report__item">
+              <span>Kontainer Paylater</span>
+              <span>
+                {new Intl.NumberFormat('id-ID', {
+                  style: 'currency',
+                  currency: 'IDR',
+                }).format(report.revenue.containerPayLater)}
+              </span>
+            </div>
+            <div className="report__item">
+              <span>Pesanan Truk Paylater</span>
+              <span>
+                {new Intl.NumberFormat('id-ID', {
+                  style: 'currency',
+                  currency: 'IDR',
+                }).format(report.revenue.orderTruckPayLater)}
+              </span>
+            </div>
+            <div className="report__item">
+              <span>Invoice Acceptance</span>
+              <span>
+                {new Intl.NumberFormat('id-ID', {
+                  style: 'currency',
+                  currency: 'IDR',
+                }).format(report.revenue.orderTruckInvoiceAcceptance)}
+              </span>
+            </div>
+            <div className="report__item">
+              <span>Charge Fee Kontainer</span>
+              <span>
+                {new Intl.NumberFormat('id-ID', {
+                  style: 'currency',
+                  currency: 'IDR',
+                }).format(report.revenue.chargeFeeContainer)}
+              </span>
+            </div>
+            <div className="report__item">
+              <span>Charge Fee Pesanan Truk</span>
+              <span>
+                {new Intl.NumberFormat('id-ID', {
+                  style: 'currency',
+                  currency: 'IDR',
+                }).format(report.revenue.chargeFeeOrderTruck)}
+              </span>
+            </div>
+            <div className="report__item report__item--total">
+              <span className="report__item--bold">Total</span>
+              <span>
+                {new Intl.NumberFormat('id-ID', {
+                  style: 'currency',
+                  currency: 'IDR',
+                }).format(report.revenue.total)}
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  try {
+    const { data: report } = await getReport(ctx, {
+      period: 'yearly',
+      year: `${new Date().getFullYear()}`,
+    });
+
+    ctx.res.setHeader(
+      'Cache-Control',
+      'public, s-maxage=10, stale-while-revalidate=59',
+    );
+    return {
+      props: {
+        report,
+        lastUpdate: dayjs().format('DD MMM YYYY - HH:mm WIB'),
+      },
+    };
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log(`[Dashboard]${JSON.stringify(error)}`);
+
+    return {
+      props: {
+        report: null,
+      },
+    };
+  }
+};
 Dashboard.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
 };

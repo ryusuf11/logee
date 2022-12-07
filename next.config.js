@@ -4,11 +4,11 @@ const path = require('path');
 const rewrites = async () => {
   return [
     {
-      source: '/login/:path*',
+      source: '/trans/:path*',
       destination: 'https://dev-api.logeetrans.com/:path*',
     },
     {
-      source: '/api/user/:path*',
+      source: '/eco/:path*',
       destination: 'https://dev-api.ecologee.id/:path*',
     },
   ];

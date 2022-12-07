@@ -1,0 +1,38 @@
+@import '../theme/_theme.scss';
+
+.loginPage {
+  max-width: 1280px;
+  margin: 10% auto;
+
+  &__title {
+    margin: 0;
+    font-size: 1.5rem;
+    color: $blackspace20;
+    font-weight: 500;
+  }
+
+  &__subtitle {
+    margin: 0;
+    font-size: 1.35rem;
+    color: $primary;
+    margin-bottom: 2rem;
+    font-weight: 600;
+  }
+
+  &__caption {
+    color: $blackspace20;
+    font-size: 0.75rem;
+    margin-bottom: 6rem;
+  }
+
+  &__submit {
+    padding: 8px 16px;
+    color: white;
+    background-color: $primary;
+    border: none;
+    width: 100%;
+    margin-top: 3rem;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+}

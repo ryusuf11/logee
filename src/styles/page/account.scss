@@ -1,0 +1,96 @@
+.account {
+  text-align: left;
+
+  &__message {
+    padding: 16px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 2rem;
+
+    &--success {
+      background-color: $blue10;
+    }
+
+    &--error {
+      background-color: $red20;
+    }
+  }
+
+  &__filter {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  &__table {
+    width: 100%;
+    border-spacing: 0;
+
+    thead {
+      background-color: $blue20;
+      border-radius: 8px;
+
+      th {
+        padding: 4px 8px;
+        color: white;
+      }
+    }
+
+    tbody {
+      tr {
+        &:nth-of-type(odd) {
+          background: white;
+        }
+        &:nth-of-type(even) {
+          background: $grey40;
+        }
+
+        td {
+          padding: 16px 8px;
+        }
+      }
+    }
+  }
+
+  &__action {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
+
+  &__form {
+    margin-top: 1rem;
+  }
+
+  &__contact {
+    background-color: $grey50;
+    padding: 1rem;
+    border-radius: 8px;
+
+    &__container {
+      display: flex;
+      gap: 8px;
+    }
+
+    &__name {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+  }
+
+  &__footer {
+    margin: 0 -24px -8px;
+    background-color: $grey20;
+    padding: 16px;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &__pagination {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+}

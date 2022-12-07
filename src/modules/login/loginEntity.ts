@@ -1,12 +1,12 @@
 export interface LoginResponse {
   success: boolean;
-  data: Data;
+  data: LoginData;
   message: string;
   code: number;
   statusCode: string;
 }
 
-export interface Data {
+export interface LoginData {
   feature: string;
   email: string;
   userId: string;

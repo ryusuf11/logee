@@ -1,0 +1,52 @@
+.dashboard {
+  text-align: left;
+
+  &__title {
+    font-size: 1.75rem;
+    font-weight: 600;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid $grey10;
+  }
+
+  &__period {
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem 0;
+    padding: 1rem;
+    background: $blue10;
+    font-size: 0.75rem;
+  }
+}
+
+.report {
+  border: 1px solid $grey10;
+  padding: 8px;
+  margin-bottom: 1rem;
+
+  &__title {
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+  &__subtitle {
+    font-size: 1rem;
+    color: $blackspace20;
+    margin-bottom: 1rem;
+  }
+
+  &__item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+
+    &--total {
+      background-color: $grey10;
+      margin: -8px;
+      padding: 8px;
+    }
+
+    &--bold {
+      font-weight: 600;
+    }
+  }
+}

@@ -6,6 +6,7 @@ import { Inter } from '@next/font/google';
 import '@/styles/global.scss';
 import { ReactElement, ReactNode } from 'react';
 import { NextPage } from 'next';
+import { UserProvider } from '@/components/UserProvider';
 
 const queryCache = new QueryCache();
 const queryClient = new QueryClient({
@@ -35,7 +36,7 @@ type AppPropsWithLayout = AppProps & {
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
 
-  return getLayout(
+  return (
     <>
       <Head>
         <title>Telkom</title>
@@ -45,16 +46,16 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
           content="width=device-width, minimum-scale=1, initial-scale=1"
         />
         <meta name="description" content="Telkom" />
-
-        <style jsx global>{`
-          html {
-            font-family: ${inter.style.fontFamily};
-          }
-        `}</style>
       </Head>
+      <style jsx global>{`
+        html,
+        body {
+          font-family: ${inter.style.fontFamily};
+        }
+      `}</style>
       <QueryClientProvider client={queryClient}>
-        <Component {...pageProps} />
+        <UserProvider>{getLayout(<Component {...pageProps} />)}</UserProvider>
       </QueryClientProvider>
-    </>,
+    </>
   );
 }

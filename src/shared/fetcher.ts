@@ -24,7 +24,7 @@ export async function post<T extends BodyInit, U>(
   return await http<U>(path, init);
 }
 
-export async function put<T extends URLSearchParams, U>(
+export async function put<T extends BodyInit, U>(
   path: string,
   body: T,
   config?: RequestInit,

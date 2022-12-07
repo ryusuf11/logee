@@ -7,6 +7,7 @@ import { useLogin } from '@/modules/login/loginHook';
 import React from 'react';
 import { setCookie } from 'cookies-next';
 import { useRouter } from 'next/router';
+import { useStoreUser } from '@/modules/user/userProvider';
 
 type FormData = {
   email: string;
@@ -28,13 +29,16 @@ export default function Home() {
   });
   const [errMessage, setErrMessage] = React.useState('');
   const router = useRouter();
+  const userStore = useStoreUser();
 
   const { mutate: loginUser } = useLogin({
     onSuccess: ({ data }) => {
-      const { accessToken } = data;
+      const { accessToken, ...userData } = data;
 
       setErrMessage('');
       setCookie('token', accessToken);
+
+      userStore.setUserData(userData);
 
       router.push('/dashboard');
     },
@@ -48,7 +52,13 @@ export default function Home() {
   };
 
   return (
-    <div>
+    <div className="loginPage">
+      <h3 className="loginPage__title">Selamat Datang di</h3>
+      <h4 className="loginPage__subtitle">Logee Order.</h4>
+      <p className="loginPage__caption">
+        Solusi untuk mengoptimalkan segala kebutuhan logistik perusahaan di
+        seluruh Indonesia
+      </p>
       <form
         onSubmit={handleSubmit((e) => {
           doLogin(e);
@@ -80,8 +90,12 @@ export default function Home() {
             />
           )}
         />
-        {errMessage && <div style={{ color: 'red' }}>{errMessage}</div>}
-        <button type="submit">Login</button>
+        {errMessage && (
+          <div className="textField__errorMessage">{errMessage}</div>
+        )}
+        <button className="loginPage__submit" type="submit">
+          Masuk
+        </button>
       </form>
     </div>
   );
